@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NotaBene.Context;
+using NotaBene.Interfaces;
+using NotaBene.Repositories;
 
 namespace NotaBene;
 
@@ -13,8 +15,11 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+        // Register interfaces to concretes type for dependency injection
+        builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
         var app = builder.Build();
 

@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NotaBene.Context;
+using NotaBene.Dtos.Notes;
+using NotaBene.Interfaces;
+using NotaBene.Mappers.Notes;
 using NotaBene.Models;
 
 namespace NotaBene.Controllers
@@ -14,96 +15,75 @@ namespace NotaBene.Controllers
     [ApiController]
     public class NoteController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly INoteRepository _noteRepository;
 
-        public NoteController(ApplicationDbContext context)
+        public NoteController(INoteRepository noteRepository)
         {
-            _context = context;
+            _noteRepository = noteRepository;
         }
 
         // GET: api/notes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
+        public async Task<ActionResult<IEnumerable<NoteDto>>> GetNotes()
         {
-            return await _context.Note.ToListAsync();
+            var notes = await _noteRepository.GetAllAsync();
+            var noteDtos = notes.Select(n => n.ToNoteDto());
+
+            return Ok(noteDtos);
         }
 
         // GET: api/notes/:id
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Note>> GetNote(long id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<NoteDto>> GetNote(int id)
         {
-            var note = await _context.Note.FindAsync(id);
+            var note = await _noteRepository.GetByIdAsync(id);
 
             if (note == null)
             {
                 return NotFound();
             }
 
-            return note;
-        }
-
-        // PUT: api/notes/:id
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNote(long id, Note note)
-        {
-            if (id != note.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(note).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NoteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(note.ToNoteDto());
         }
 
         // POST: api/notes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Note>> PostNote(Note note)
+        public async Task<ActionResult<Note>> PostNote(CreateNoteDto createNoteDto)
         {
-            _context.Note.Add(note);
-            await _context.SaveChangesAsync();
+            var note = createNoteDto.ToNote();
+            await _noteRepository.CreateAsync(note);
 
-            // Returns 201 if successful; references GetNote to create and add Location header to response
+            // Returns 201 if successful; references GetNote(note.id) to add Location header to response
             return CreatedAtAction(nameof(GetNote), new { id = note.Id }, note);
         }
 
-        // DELETE: api/notes/:id
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNote(long id)
+        // PUT: api/notes/:id
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<NoteDto>> PutNote(int id, UpdateNoteDto updateNoteDto)
         {
-            var note = await _context.Note.FindAsync(id);
+            var note = updateNoteDto.ToNote();
+            var updatedNote = await _noteRepository.UpdateAsync(id, note);
+
+            if (updatedNote == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedNote.ToNoteDto());
+        }
+
+        // DELETE: api/notes/:id
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteNote(int id)
+        {
+            var note = await _noteRepository.DeleteAsync(id);
+
             if (note == null)
             {
                 return NotFound();
             }
 
-            _context.Note.Remove(note);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool NoteExists(long id)
-        {
-            return _context.Note.Any(e => e.Id == id);
         }
     }
 }

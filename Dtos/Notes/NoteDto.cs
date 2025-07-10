@@ -1,6 +1,6 @@
-namespace NotaBene.Models;
+namespace NotaBene.Dtos.Notes;
 
-public class Note
+public class NoteDto
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
