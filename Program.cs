@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NotaBene.Context;
 using NotaBene.Interfaces;
@@ -12,6 +13,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to container
+        builder.Services.AddAuthorization();
+        builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -22,6 +26,8 @@ public class Program
         builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
         var app = builder.Build();
+
+        app.MapIdentityApi<IdentityUser>();
 
         // Configure HTTP request pipeline
         if (app.Environment.IsDevelopment())

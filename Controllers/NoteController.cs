@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotaBene.Dtos.Notes;
@@ -24,6 +25,7 @@ namespace NotaBene.Controllers
 
         // GET: api/notes
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<NoteDto>>> GetNotes()
         {
             var notes = await _noteRepository.GetAllAsync();
@@ -34,6 +36,7 @@ namespace NotaBene.Controllers
 
         // GET: api/notes/:id
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<NoteDto>> GetNote(int id)
         {
             var note = await _noteRepository.GetByIdAsync(id);
@@ -48,6 +51,7 @@ namespace NotaBene.Controllers
 
         // POST: api/notes
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Note>> PostNote(CreateNoteDto createNoteDto)
         {
             var note = createNoteDto.ToNote();
@@ -59,6 +63,7 @@ namespace NotaBene.Controllers
 
         // PUT: api/notes/:id
         [HttpPut("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<NoteDto>> PutNote(int id, UpdateNoteDto updateNoteDto)
         {
             var note = updateNoteDto.ToNote();
@@ -74,6 +79,7 @@ namespace NotaBene.Controllers
 
         // DELETE: api/notes/:id
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteNote(int id)
         {
             var note = await _noteRepository.DeleteAsync(id);
