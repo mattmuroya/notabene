@@ -12,24 +12,26 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to container
         builder.Services.AddAuthorization();
+        builder.Services.AddScoped<INoteRepository, NoteRepository>();
+        builder.Services.AddControllers();
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            if (builder.Environment.IsDevelopment())
+                options.UseInMemoryDatabase("ApplicationDb");
+            else
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+        });
+
         builder.Services.AddIdentityApiEndpoints<IdentityUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-        builder.Services.AddControllers();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-        // Register interfaces to concretes type for dependency injection
-        builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
         var app = builder.Build();
 
-        app.MapIdentityApi<IdentityUser>();
-
-        // Configure HTTP request pipeline
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -41,6 +43,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.MapIdentityApi<IdentityUser>();
 
         app.Run();
     }

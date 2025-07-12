@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotaBene.Dtos.Notes;
+using NotaBene.Extensions.Notes;
 using NotaBene.Interfaces;
-using NotaBene.Mappers.Notes;
 using NotaBene.Models;
 
 namespace NotaBene.Controllers

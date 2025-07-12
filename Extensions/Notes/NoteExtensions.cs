@@ -1,9 +1,9 @@
 using NotaBene.Dtos.Notes;
 using NotaBene.Models;
 
-namespace NotaBene.Mappers.Notes;
+namespace NotaBene.Extensions.Notes;
 
-public static class NoteMapper
+public static class NoteExtensions
 {
     public static NoteDto ToNoteDto(this Note note)
     {
