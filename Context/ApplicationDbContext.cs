@@ -12,5 +12,5 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
     }
 
-    public DbSet<Note> Note { get; set; }
+    public DbSet<Note> Notes { get; set; }
 }

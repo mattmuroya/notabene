@@ -16,17 +16,17 @@ public class NoteRepository : INoteRepository
 
     public async Task<IEnumerable<Note>> GetAllAsync()
     {
-        return await _context.Note.OrderByDescending(n => n.ModifiedOn).ToListAsync();
+        return await _context.Notes.OrderByDescending(n => n.ModifiedOn).ToListAsync();
     }
 
     public async Task<Note?> GetByIdAsync(int id)
     {
-        return await _context.Note.FindAsync(id); // Returns null if not found
+        return await _context.Notes.FindAsync(id); // Returns null if not found
     }
 
     public async Task<Note> CreateAsync(Note note)
     {
-        await _context.Note.AddAsync(note); // Stage note object for write to DB
+        await _context.Notes.AddAsync(note); // Stage note object for write to DB
         await _context.SaveChangesAsync(); // Write data and assign Id to note object
 
         return note;
@@ -34,7 +34,7 @@ public class NoteRepository : INoteRepository
 
     public async Task<Note?> UpdateAsync(int id, Note note)
     {
-        var noteToUpdate = await _context.Note.FindAsync(id);
+        var noteToUpdate = await _context.Notes.FindAsync(id);
 
         if (noteToUpdate == null)
         {
@@ -52,14 +52,14 @@ public class NoteRepository : INoteRepository
 
     public async Task<Note?> DeleteAsync(int id)
     {
-        var noteToDelete = await _context.Note.FindAsync(id);
+        var noteToDelete = await _context.Notes.FindAsync(id);
 
         if (noteToDelete == null)
         {
             return null;
         }
 
-        _context.Note.Remove(noteToDelete);
+        _context.Notes.Remove(noteToDelete);
         await _context.SaveChangesAsync();
 
         return noteToDelete;
