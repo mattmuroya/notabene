@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NotaBene.Context;
 using NotaBene.Interfaces;
+using NotaBene.Models;
 using NotaBene.Repositories;
 
 namespace NotaBene;
@@ -18,13 +19,10 @@ public class Program
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            if (builder.Environment.IsDevelopment())
-                options.UseInMemoryDatabase("ApplicationDb");
-            else
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
         });
 
-        builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+        builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         builder.Services.AddEndpointsApiExplorer();
@@ -44,7 +42,7 @@ public class Program
 
         app.MapControllers();
 
-        app.MapIdentityApi<IdentityUser>();
+        app.MapIdentityApi<ApplicationUser>();
 
         app.Run();
     }

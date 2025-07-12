@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NotaBene.Models;
 
 
 namespace NotaBene.Controllers
@@ -17,7 +18,7 @@ namespace NotaBene.Controllers
         // POST: /logout
         [HttpPost]
         [Authorize]
-        public async Task<IResult> Logout(SignInManager<IdentityUser> signInManager, [FromBody] object empty)
+        public async Task<IResult> Logout(SignInManager<ApplicationUser> signInManager, [FromBody] object empty)
         {
             if (empty == null) return Results.Unauthorized();
 
