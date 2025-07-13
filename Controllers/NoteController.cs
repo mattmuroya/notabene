@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NotaBene.Dtos.Notes;
+using NotaBene.Extensions.ClaimsPrincipal;
 using NotaBene.Extensions.Notes;
 using NotaBene.Interfaces;
 using NotaBene.Models;
@@ -28,7 +30,13 @@ namespace NotaBene.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<NoteDto>>> GetNotes()
         {
-            var notes = await _noteRepository.GetAllAsync();
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var notes = await _noteRepository.GetByUserIdAsync(userId);
             var noteDtos = notes.Select(n => n.ToNoteDto());
 
             return Ok(noteDtos);
@@ -37,10 +45,15 @@ namespace NotaBene.Controllers
         // GET: api/notes/:id
         [HttpGet("{id:int}")]
         [Authorize]
-        public async Task<ActionResult<NoteDto>> GetNote(int id)
+        public async Task<ActionResult<NoteDto>> GetNote([FromRoute] int id)
         {
-            var note = await _noteRepository.GetByIdAsync(id);
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
 
+            var note = await _noteRepository.GetByIdAsync(id, userId);
             if (note == null)
             {
                 return NotFound();
@@ -52,9 +65,17 @@ namespace NotaBene.Controllers
         // POST: api/notes
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Note>> PostNote(CreateNoteDto createNoteDto)
+        public async Task<ActionResult<Note>> PostNote([FromBody] CreateNoteDto createNoteDto)
         {
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
             var note = createNoteDto.ToNote();
+            note.UserId = userId;
+
             await _noteRepository.CreateAsync(note);
 
             // Returns 201 if successful; references GetNote(note.id) to add Location header to response
@@ -64,10 +85,16 @@ namespace NotaBene.Controllers
         // PUT: api/notes/:id
         [HttpPut("{id:int}")]
         [Authorize]
-        public async Task<ActionResult<NoteDto>> PutNote(int id, UpdateNoteDto updateNoteDto)
+        public async Task<ActionResult<NoteDto>> PutNote([FromRoute] int id, [FromBody] UpdateNoteDto updateNoteDto)
         {
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
             var note = updateNoteDto.ToNote();
-            var updatedNote = await _noteRepository.UpdateAsync(id, note);
+            var updatedNote = await _noteRepository.UpdateAsync(id, note, userId);
 
             if (updatedNote == null)
             {
@@ -80,10 +107,15 @@ namespace NotaBene.Controllers
         // DELETE: api/notes/:id
         [HttpDelete("{id:int}")]
         [Authorize]
-        public async Task<IActionResult> DeleteNote(int id)
+        public async Task<IActionResult> DeleteNote([FromRoute] int id)
         {
-            var note = await _noteRepository.DeleteAsync(id);
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
 
+            var note = await _noteRepository.DeleteAsync(id, userId);
             if (note == null)
             {
                 return NotFound();

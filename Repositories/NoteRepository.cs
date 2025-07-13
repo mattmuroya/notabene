@@ -14,14 +14,19 @@ public class NoteRepository : INoteRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Note>> GetAllAsync()
+    // public async Task<IEnumerable<Note>> GetAllAsync()
+    // {
+    //     return await _context.Notes.OrderByDescending(n => n.ModifiedOn).ToListAsync();
+    // }
+
+    public async Task<IEnumerable<Note>> GetByUserIdAsync(string userId)
     {
-        return await _context.Notes.OrderByDescending(n => n.ModifiedOn).ToListAsync();
+        return await _context.Notes.Where(n => n.UserId == userId).ToListAsync();
     }
 
-    public async Task<Note?> GetByIdAsync(int id)
+    public async Task<Note?> GetByIdAsync(int id, string userId)
     {
-        return await _context.Notes.FindAsync(id); // Returns null if not found
+        return await _context.Notes.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userId);
     }
 
     public async Task<Note> CreateAsync(Note note)
@@ -32,10 +37,9 @@ public class NoteRepository : INoteRepository
         return note;
     }
 
-    public async Task<Note?> UpdateAsync(int id, Note note)
+    public async Task<Note?> UpdateAsync(int id, Note note, string userId)
     {
-        var noteToUpdate = await _context.Notes.FindAsync(id);
-
+        var noteToUpdate = await _context.Notes.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userId);
         if (noteToUpdate == null)
         {
             return null;
@@ -50,10 +54,9 @@ public class NoteRepository : INoteRepository
         return noteToUpdate;
     }
 
-    public async Task<Note?> DeleteAsync(int id)
+    public async Task<Note?> DeleteAsync(int id, string userId)
     {
-        var noteToDelete = await _context.Notes.FindAsync(id);
-
+        var noteToDelete = await _context.Notes.FirstOrDefaultAsync(n => n.Id == id && n.UserId == userId);
         if (noteToDelete == null)
         {
             return null;

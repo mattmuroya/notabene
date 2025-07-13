@@ -14,6 +14,7 @@ public static class NoteExtensions
             Content = note.Content,
             CreatedOn = note.CreatedOn,
             ModifiedOn = note.ModifiedOn,
+            UserId = note.UserId,
         };
     }
 }
