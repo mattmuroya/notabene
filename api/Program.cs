@@ -22,6 +22,16 @@ public class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
         });
 
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequiredUniqueChars = 1;
+        });
+
         builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -42,7 +52,7 @@ public class Program
 
         app.MapControllers();
 
-        app.MapIdentityApi<ApplicationUser>();
+        app.MapGroup("/api/auth").MapIdentityApi<ApplicationUser>();
 
         app.Run();
     }

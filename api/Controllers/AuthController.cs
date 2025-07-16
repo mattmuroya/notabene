@@ -16,7 +16,7 @@ namespace Api.Controllers
     public class AuthController : ControllerBase
     {
         // POST: /logout
-        [HttpPost]
+        [HttpPost("/api/auth/logout")]
         [Authorize]
         public async Task<IResult> Logout(SignInManager<ApplicationUser> signInManager, [FromBody] object empty)
         {
