@@ -6,7 +6,6 @@ using Api.Dtos.Auth;
 using Api.Extensions.Auth;
 using Api.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,29 +47,30 @@ namespace Api.Controllers
             return Created((string?)null, new { message = "Registration successful." });
         }
 
-        //
-        // [HttpPost("/login")]
-        // public async Task<IActionResult> Login(LoginRequest loginRequest)
-        // {
-        //     // var user = await _userManager.FindByNameAsync(loginRequest.Email);
-        //     var res = await _signInManager.PasswordSignInAsync(loginRequest.Email, loginRequest.Password, false, false);
-        //     
-        //     if (!res.Succeeded)
-        //     {
-        //         return BadRequest(new { errors });
-        //     }
-        // }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var res = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, false, false);
 
+            if (!res.Succeeded)
+            {
+                return Unauthorized(new { errors = (string[]) ["Invalid username or password."] });
+            }
 
-        // POST: /logout
-        // [HttpPost("/logout")]
-        // [Authorize]
-        // public async Task<IResult> Logout(SignInManager<ApplicationUser> signInManager, [FromBody] object empty)
-        // {
-        //     if (empty == null) return Results.Unauthorized();
-        //
-        //     await signInManager.SignOutAsync();
-        // return Results.Ok();
-        // }
+            return Ok(new { message = "Login Successful." });
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout([FromBody] object empty)
+        {
+            if (empty == null)
+            {
+                return Unauthorized();
+            }
+
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
     }
 }
