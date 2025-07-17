@@ -4,10 +4,10 @@ namespace Api.Dtos.Notes;
 
 public class CreateNoteDto
 {
-    [Required]
+    [Required(AllowEmptyStrings = true)]
     [StringLength(240)]
     public string Title { get; set; } = string.Empty;
 
-    [Required]
+    [Required(AllowEmptyStrings = true)]
     public string Content { get; set; } = string.Empty;
 }
