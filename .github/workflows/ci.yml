@@ -47,9 +47,9 @@ jobs:
         run: npm ci
         working-directory: tests
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-        working-directory: tests
+      # - name: Install Playwright browsers
+        # run: npx playwright install --with-deps
+        # working-directory: tests
 
       - name: Run tests
         run: npx playwright test
