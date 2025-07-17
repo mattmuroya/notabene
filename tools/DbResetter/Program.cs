@@ -32,8 +32,8 @@ class Program
         Console.WriteLine("Dropping database...");
         await db.Database.EnsureDeletedAsync();
 
-        Console.WriteLine("Recreating database...");
-        await db.Database.EnsureCreatedAsync();
+        Console.WriteLine("Applying migrations...");
+        await db.Database.MigrateAsync();
 
         Console.WriteLine("Database reset complete.");
     }
