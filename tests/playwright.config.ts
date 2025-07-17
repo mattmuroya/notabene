@@ -81,7 +81,11 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command:
-      'ASPNETCORE_ENVIRONMENT=Test dotnet run --project ../api/Api.csproj --urls http://localhost:5038',
+      'dotnet run --project ../api/Api.csproj --urls http://localhost:5038 --launch-profile=http_test',
+    // env: {
+    // DOTNET_ENVIRONMENT: 'Test',
+    // ASPNETCORE_ENVIRONMENT: 'Test',
+    // },
     url: 'http://localhost:5038/api/healthz',
     reuseExistingServer: !process.env.CI,
   },
