@@ -13,17 +13,18 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddAuthorization();
-        builder.Services.AddScoped<INoteRepository, NoteRepository>();
-        builder.Services.AddControllers();
-
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
         });
 
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
         builder.Services.Configure<IdentityOptions>(options =>
         {
+            options.User.RequireUniqueEmail = true;
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireLowercase = true;
@@ -32,27 +33,30 @@ public class Program
             options.Password.RequiredUniqueChars = 1;
         });
 
-        builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SameSite = SameSiteMode.Strict;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            options.ExpireTimeSpan = TimeSpan.FromDays(14);
+            options.SlidingExpiration = true;
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+            // options.LoginPath = "/login";
+            // options.AccessDeniedPath = "/access-denied";
+        });
+
+        builder.Services.AddScoped<INoteRepository, NoteRepository>();
+
+        builder.Services.AddControllers();
 
         var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
-
-        app.MapGroup("/api/auth").MapIdentityApi<ApplicationUser>();
 
         app.Run();
     }
