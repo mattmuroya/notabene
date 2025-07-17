@@ -48,6 +48,7 @@ public class Program
         builder.Services.AddScoped<INoteRepository, NoteRepository>();
 
         builder.Services.AddControllers();
+        builder.Services.AddHealthChecks();
 
         var app = builder.Build();
 
@@ -57,6 +58,7 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+        app.MapHealthChecks("api/healthz");
 
         app.Run();
     }
