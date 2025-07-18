@@ -57,7 +57,7 @@ namespace Api.Controllers
                 return Unauthorized(new { errors = (string[]) ["Invalid username or password."] });
             }
 
-            return Ok(new { message = "Login Successful." });
+            return Ok(new { message = "Login successful." });
         }
 
         [HttpPost("logout")]
@@ -70,7 +70,7 @@ namespace Api.Controllers
             }
 
             await _signInManager.SignOutAsync();
-            return Ok();
+            return NoContent();
         }
     }
 }

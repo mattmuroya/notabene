@@ -36,7 +36,7 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /test\.setup\.ts/,
+      testMatch: /setup\.spec\.ts/,
     },
     {
       name: 'api',
@@ -88,5 +88,8 @@ export default defineConfig({
     // },
     url: 'http://localhost:5038/api/healthz',
     reuseExistingServer: !process.env.CI,
+    // reuseExistingServer: false,
+    // stdout: 'pipe',
+    // stderr: 'pipe',
   },
 });
