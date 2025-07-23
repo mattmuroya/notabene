@@ -5,7 +5,7 @@ test.describe('PUT: /api/notes/:id', () => {
   test('updates an existing note created by authenticated user', async ({
     request,
   }) => {
-    const { userId } = await registerNewUser(request);
+    const { id: userId } = await registerNewUser(request);
 
     const title = 'New Note';
     const content = 'Hello, World!';

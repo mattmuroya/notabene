@@ -18,7 +18,7 @@ export const registerNewUser = async (
     return {
       email,
       password,
-      id: body.data.userId,
+      id: body.id,
     };
   }
 
