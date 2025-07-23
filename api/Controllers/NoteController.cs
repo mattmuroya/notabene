@@ -77,9 +77,10 @@ namespace Api.Controllers
             note.UserId = userId;
 
             await _noteRepository.CreateAsync(note);
+            var createdNote = note.ToNoteDto();
 
             // Returns 201 if successful; references GetNote(note.id) to add Location header to response
-            return CreatedAtAction(nameof(GetNote), new { id = note.Id }, note);
+            return CreatedAtAction(nameof(GetNote), new { id = createdNote.Id }, createdNote);
         }
 
         // PUT: api/notes/:id

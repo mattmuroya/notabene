@@ -44,7 +44,8 @@ namespace Api.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            return Created((string?)null, new { message = "Registration successful." });
+            return Created((string?)null,
+                new { message = "Registration successful.", data = new { userId = user.Id } });
         }
 
         [HttpPost("login")]
@@ -61,7 +62,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("logout")]
-        [Authorize]
+        // [Authorize] // Authorization not required; just return 204 if logout not processed
         public async Task<IActionResult> Logout([FromBody] object empty)
         {
             if (empty == null)
