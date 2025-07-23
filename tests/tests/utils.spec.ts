@@ -5,7 +5,7 @@ export const registerNewUser = async (
   request: APIRequestContext,
   email: string = '',
   password: string = ''
-): Promise<{ email: string; password: string; userId: string }> => {
+): Promise<{ email: string; password: string; id: string }> => {
   email = email ? email : `user+${randomUUID()}@example.com`;
   password = password ? password : '1234qwer!@#$QWER';
 
@@ -18,7 +18,7 @@ export const registerNewUser = async (
     return {
       email,
       password,
-      userId: body.data.userId,
+      id: body.data.userId,
     };
   }
 

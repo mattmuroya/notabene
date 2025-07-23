@@ -13,7 +13,9 @@ test.describe('/api/auth/register', () => {
     expect(res.status()).toBe(201);
 
     const body = await res.json();
-    expect(body).toHaveProperty('message', 'Registration successful.');
+    expect(body).toHaveProperty('email', email);
+    expect(body).toHaveProperty('id');
+    expect(body.id).toBeTruthy();
   });
 
   test('rejects duplicate email', async ({ request }) => {

@@ -44,8 +44,7 @@ namespace Api.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            return Created((string?)null,
-                new { message = "Registration successful.", data = new { userId = user.Id } });
+            return Created((string?)null, user.ToApplicationUserDto());
         }
 
         [HttpPost("login")]
@@ -58,7 +57,13 @@ namespace Api.Controllers
                 return Unauthorized(new { errors = (string[]) ["Invalid username or password."] });
             }
 
-            return Ok(new { message = "Login successful." });
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null)
+            {
+                return Unauthorized(new { errors = (string[]) ["Invalid username or password."] });
+            }
+
+            return Ok(user.ToApplicationUserDto());
         }
 
         [HttpPost("logout")]

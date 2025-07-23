@@ -11,7 +11,8 @@ test.describe('/api/auth/login', () => {
     expect(res.status()).toBe(200);
 
     const body = await res.json();
-    expect(body).toHaveProperty('message', 'Login successful.');
+    expect(body).toHaveProperty('id', credentials.id);
+    expect(body).toHaveProperty('email', credentials.email);
 
     const headers = res.headers();
     expect(headers).toHaveProperty('set-cookie');
