@@ -26,7 +26,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<ActionResult<ApplicationUserDto>> Register([FromBody] RegisterDto registerDto)
         {
             var user = registerDto.ToApplicationUser();
             var res = await _userManager.CreateAsync(user, registerDto.Password);
@@ -48,7 +48,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto loginDto)
         {
             var res = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, false, false);
 
@@ -77,6 +77,19 @@ namespace Api.Controllers
 
             await _signInManager.SignOutAsync();
             return NoContent();
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<ApplicationUserDto>> GetCurrentUser()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(user.ToApplicationUserDto());
         }
     }
 }
