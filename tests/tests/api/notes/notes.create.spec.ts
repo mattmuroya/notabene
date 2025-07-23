@@ -5,7 +5,7 @@ test.describe('POST: /api/notes/', () => {
   test('creates new note associated with authenticated user', async ({
     request,
   }) => {
-    const { userId } = await registerNewUser(request);
+    const { id: userId } = await registerNewUser(request);
 
     const title = 'New Note';
     const content = 'Hello, World!';
@@ -36,7 +36,7 @@ test.describe('POST: /api/notes/', () => {
   });
 
   test('defaults missing title to empty string', async ({ request }) => {
-    const { userId } = await registerNewUser(request);
+    const { id: userId } = await registerNewUser(request);
 
     const content = 'Hello, World!';
     const res = await request.post('/api/notes', {
@@ -52,7 +52,7 @@ test.describe('POST: /api/notes/', () => {
   });
 
   test('defaults missing content to empty string', async ({ request }) => {
-    const { userId } = await registerNewUser(request);
+    const { id: userId } = await registerNewUser(request);
 
     const title = 'New Note';
     const res = await request.post('/api/notes', {
