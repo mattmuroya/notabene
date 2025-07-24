@@ -10,18 +10,12 @@ import { Router } from '@angular/router';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  private auth = inject(AuthService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   logout() {
-    this.auth.logout().subscribe({
-      next: (_res) => {
-        console.log('Logout successful; redirecting to Login page');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error(err);
-      },
+    this.authService.logout().subscribe((success) => {
+      this.router.navigate(['/login']);
     });
   }
 }
