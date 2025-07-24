@@ -14,14 +14,9 @@ public class NoteRepository : INoteRepository
         _context = context;
     }
 
-    // public async Task<IEnumerable<Note>> GetAllAsync()
-    // {
-    //     return await _context.Notes.OrderByDescending(n => n.ModifiedOn).ToListAsync();
-    // }
-
     public async Task<IEnumerable<Note>> GetByUserIdAsync(string userId)
     {
-        return await _context.Notes.Where(n => n.UserId == userId).ToListAsync();
+        return await _context.Notes.Where(n => n.UserId == userId).OrderByDescending(n => n.UpdatedAt).ToListAsync();
     }
 
     public async Task<Note?> GetByIdAsync(int id, string userId)
@@ -47,7 +42,7 @@ public class NoteRepository : INoteRepository
 
         noteToUpdate.Title = note.Title;
         noteToUpdate.Content = note.Content;
-        noteToUpdate.ModifiedOn = note.ModifiedOn;
+        noteToUpdate.UpdatedAt = note.UpdatedAt;
 
         await _context.SaveChangesAsync();
 

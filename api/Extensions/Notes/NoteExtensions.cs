@@ -12,8 +12,8 @@ public static class NoteExtensions
             Id = note.Id,
             Title = note.Title,
             Content = note.Content,
-            CreatedOn = note.CreatedOn,
-            ModifiedOn = note.ModifiedOn,
+            CreatedAt = note.CreatedAt,
+            UpdatedAt = note.UpdatedAt,
             UserId = note.UserId,
         };
     }
