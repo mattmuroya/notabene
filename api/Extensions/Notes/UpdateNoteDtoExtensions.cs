@@ -11,7 +11,7 @@ public static class UpdateNoteDtoExtensions
         {
             Title = updateNoteDto.Title,
             Content = updateNoteDto.Content,
-            ModifiedOn = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
         };
     }
 }
