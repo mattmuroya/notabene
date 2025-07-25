@@ -29,7 +29,7 @@ jobs:
         working-directory: client
 
       - name: Build Angular app
-        run: npm run build -- --output-path ../api/wwwroot
+        run: npm run build
         working-directory: client
 
       - name: Set up .NET
