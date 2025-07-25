@@ -29,12 +29,16 @@ jobs:
       sqlserver:
         image: mcr.microsoft.com/mssql/server:2022-latest
         env:
-          SQL_SERVER_PASSWORD: ${{ secrets.SQL_SERVER_PASSWORD }}
-          ACCEPT_EULA: "Y"
+          ACCEPT_EULA: Y
+          SA_PASSWORD: ${{ secrets.SA_PASSWORD }}
+          MSSQL_PID: Express
         ports:
           - 1433:1433
         options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P '${{ secrets.SQL_SERVER_PASSWORD }}' -Q 'SELECT 1'" --health-interval 10s --health-timeout 5s --health-retries 5
+          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repository
