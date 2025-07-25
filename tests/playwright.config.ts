@@ -81,7 +81,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command:
-      'dotnet run --project ../api/Api.csproj --urls http://localhost:5038 --launch-profile=http_test',
+      'dotnet run --project ../api/Api.csproj --urls http://localhost:5038 --launch-profile=http',
     // env: {
     // DOTNET_ENVIRONMENT: 'Test',
     // ASPNETCORE_ENVIRONMENT: 'Test',

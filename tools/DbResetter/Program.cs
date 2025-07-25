@@ -13,7 +13,9 @@ class Program
 
         var config = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.Test.json", optional: false, reloadOnChange: true)
+            // .AddJsonFile("appsettings.Test.json", optional: false, reloadOnChange: true)
+            .AddUserSecrets<Program>()
+            .AddEnvironmentVariables()
             .Build();
 
         var connectionString = config.GetConnectionString("DefaultConnection");
@@ -22,7 +24,8 @@ class Program
         var services = new ServiceCollection();
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            // options.UseNpgsql(connectionString));
+            options.UseSqlServer(connectionString));
 
         var provider = services.BuildServiceProvider();
 
