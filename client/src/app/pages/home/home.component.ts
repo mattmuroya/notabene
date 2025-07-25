@@ -1,26 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { AuthService } from '../../services/auth/auth.service';
-import { User } from '../../types/types';
+import { NotesComponent } from '../../components/notes/notes.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavbarComponent],
+  imports: [NavbarComponent, NotesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
-  private authService = inject(AuthService);
-
-  currentUser: User | null = null;
-
-  ngOnInit() {
-    // Get current user state through Observable stream
-    this.authService.currentUser$.subscribe({
-      next: (user) => {
-        this.currentUser = user;
-      },
-    });
-  }
-}
+export class HomeComponent {}

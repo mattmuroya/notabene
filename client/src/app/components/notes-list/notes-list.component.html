@@ -1,0 +1,5 @@
+<ul>
+  @for (note of notes(); track note.id) {
+  <app-note-preview [note]="note" />
+  }
+</ul>
