@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Note } from '../../types/note.types';
+import { NoteService } from '../../services/notes/note.service';
 
 @Component({
   selector: 'app-note-preview',
@@ -9,5 +10,11 @@ import { Note } from '../../types/note.types';
   styleUrl: './note-preview.component.scss',
 })
 export class NotePreviewComponent {
+  noteService = inject(NoteService);
+
   note = input.required<Note>();
+
+  onClick() {
+    this.noteService.selectNote(this.note());
+  }
 }
