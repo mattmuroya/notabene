@@ -12,5 +12,4 @@ import { NoteService } from '../../services/notes/note.service';
 export class NotesListComponent {
   private noteService = inject(NoteService);
   notes = this.noteService.notes;
-  loading = this.noteService.loading;
 }
