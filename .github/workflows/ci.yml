@@ -10,17 +10,32 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # services:
+    #   postgres:
+    #     image: postgres:17
+    #     env:
+    #       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+    #       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+    #       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd "pg_isready"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+
     services:
-      postgres:
-        image: postgres:17
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          ACCEPT_EULA: Y
+          SA_PASSWORD: ${{ secrets.SA_PASSWORD }}
+          MSSQL_PID: Express
         ports:
-          - 5432:5432
+          - 1433:1433
         options: >-
-          --health-cmd "pg_isready"
+          --health-cmd "timeout 5s bash -c '</dev/tcp/localhost/1433' || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -48,12 +63,14 @@ jobs:
         working-directory: tests
 
       # - name: Install Playwright browsers
-        # run: npx playwright install --with-deps
-        # working-directory: tests
+      # run: npx playwright install --with-deps
+      # working-directory: tests
 
       - name: Run tests
         run: npx playwright test
         working-directory: tests
+        env:
+          ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=notabene;User Id=sa;Password=${{ secrets.SA_PASSWORD }};TrustServerCertificate=true;"
 
       - name: Upload report
         uses: actions/upload-artifact@v4
