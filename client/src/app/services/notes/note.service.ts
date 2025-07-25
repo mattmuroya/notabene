@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { CreateNoteRequest, Note } from '../../types/note.types';
+import {
+  CreateNoteRequest,
+  Note,
+  UpdateNoteRequest,
+} from '../../types/note.types';
 
 @Injectable({
   providedIn: 'root',
@@ -55,6 +59,18 @@ export class NoteService {
         next: (createdNote) => {
           this._notes.set([createdNote, ...this._notes()]);
           this.selectNote(createdNote);
+        },
+      });
+  }
+
+  updateNote(id: string, updateNoteRequest: UpdateNoteRequest) {
+    this.http
+      .put<Note>(`/api/notes/${id}`, updateNoteRequest, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (_success) => {
+          this.loadNotes();
         },
       });
   }

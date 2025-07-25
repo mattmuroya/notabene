@@ -1,1 +1,22 @@
-<pre class="editor" contenteditable="true">{{ note()?.content }}</pre>
+<!-- note-detail.component.html -->
+<div class="note-detail-container">
+  @if (selectedNote()) {
+  <form>
+    <input
+      id="title"
+      type="text"
+      [value]="updatedTitle"
+      (input)="onChangeTitle($event)"
+      placeholder="New Note"
+    />
+
+    <textarea
+      id="content"
+      [value]="updatedContent"
+      (input)="onChangeContent($event)"
+      rows="10"
+    >
+    </textarea>
+  </form>
+  }
+</div>
