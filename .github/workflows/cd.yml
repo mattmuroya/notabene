@@ -49,6 +49,12 @@ jobs:
         run: dotnet publish --configuration Release --no-build --output ./publish
         working-directory: api
 
+      - name: Run database migrations
+        run: |
+          dotnet tool install --global dotnet-ef --version 8.*
+          dotnet ef database update --connection "${{ secrets.AZURE_SQL_CONNECTION_STRING }}"
+        working-directory: api
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
