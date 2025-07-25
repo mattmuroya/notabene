@@ -1,0 +1,33 @@
+:host {
+    width: 350px;
+    height: 100vh;
+
+    border-right: 2px solid #444;
+
+    overflow-y:auto;
+}
+
+.controls {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    input,
+    button {
+        font-size: 1.2rem;
+        padding: 10px;
+        color: #999;
+
+        border: 2px solid #444;
+
+        background-color: #1D2327;
+    }
+
+    button {
+        margin-bottom: 20px;
+        &:hover {
+            cursor: pointer;
+            background-color: #263B69;
+        }
+    }
+}
