@@ -1,0 +1,57 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches: [main]
+  workflow_dispatch: # Allows manual triggering
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Only run if CI workflow succeeded AND it was on main branch
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install Angular dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Build Angular app
+        run: npm run build -- --output-path ../api/wwwroot
+        working-directory: client
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore .NET dependencies
+        run: dotnet restore
+        working-directory: api
+
+      - name: Build .NET app
+        run: dotnet build --configuration Release --no-restore
+        working-directory: api
+
+      - name: Publish .NET app
+        run: dotnet publish --configuration Release --no-build --output ./publish
+        working-directory: api
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'app-notabene'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: api/publish
