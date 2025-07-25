@@ -1,0 +1,43 @@
+<h2>Register</h2>
+<form
+  class="register-form"
+  (ngSubmit)="submit()"
+  #registerForm="ngForm"
+  novalidate
+>
+  <fieldset [disabled]="successMessage()">
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      name="email"
+      required
+      email
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      name="password"
+      required
+      minlength="8"
+    />
+    <input
+      type="password"
+      placeholder="Confirm Password"
+      [(ngModel)]="confirmPassword"
+      name="confirmPassword"
+      required
+      minlength="8"
+    />
+
+    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+  </fieldset>
+  <p>Already have an account? <a routerLink="/login">Login</a></p>
+</form>
+
+@if (successMessage()) {
+<p style="color: green">{{ successMessage() }}</p>
+} @if (errorMessage()) {
+<p style="color: red">{{ errorMessage() }}</p>
+}

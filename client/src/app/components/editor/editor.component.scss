@@ -1,4 +1,41 @@
-.editor {
-    outline: 1px solid black;
-    min-height: 100px;
+:host {
+    display: flex;
+    // align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    flex-grow: 1;
+    font-size: 2rem;
+
+    fieldset {
+        width: 800px;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        display: flex;
+        flex-direction: column;
+
+        label {
+            color: #444;
+            margin-top: 40px;
+
+        }
+
+        input,
+        textarea {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #999;
+            outline: none;
+            border: none;
+            background: none;
+        }
+
+        textarea {
+            flex-grow: 1;
+            min-height: 0;
+        }
+    }
 }

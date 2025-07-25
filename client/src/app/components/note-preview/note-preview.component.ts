@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { Note } from '../../types/note.types';
 import { NoteService } from '../../services/notes/note.service';
 
@@ -12,7 +12,13 @@ import { NoteService } from '../../services/notes/note.service';
 export class NotePreviewComponent {
   noteService = inject(NoteService);
 
+  selectedNote = this.noteService.selectedNote;
+
   note = input.required<Note>();
+  truncatedContent = computed(() => {
+    const content = this.note().content;
+    return content.length > 99 ? content.slice(0, 96) + '...' : content;
+  });
 
   onClick() {
     this.noteService.selectNote(this.note());

@@ -1,5 +1,8 @@
 <div>
-  <input (input)="onInputFilter($event)" />
-  <button (click)="onClickNew()">new</button>
+  <div class="controls">
+    <button (click)="onClickLogout()">Log Out</button>
+    <button (click)="onClickNew()">New Note</button>
+    <input (input)="onInputFilter($event)" placeholder="Filter..." />
+  </div>
+  <app-notes-list />
 </div>
-<app-notes-list />

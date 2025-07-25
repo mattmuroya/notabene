@@ -1,0 +1,28 @@
+<h2>Login</h2>
+<form class="login-form" (ngSubmit)="submit()" #loginForm="ngForm" novalidate>
+  <fieldset [disabled]="successMessage()">
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      name="email"
+      required
+      email
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      name="password"
+      required
+    />
+    <button type="submit">Login</button>
+  </fieldset>
+  <p>Don't have an account? <a routerLink="/register">Register</a></p>
+</form>
+
+@if (successMessage()) {
+<p style="color: green">{{ successMessage() }}</p>
+} @if (errorMessage()) {
+<p style="color: red">{{ errorMessage() }}</p>
+}

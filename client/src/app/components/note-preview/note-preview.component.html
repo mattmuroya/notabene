@@ -1,6 +1,12 @@
-<li (click)="onClick()">
-  <div>{{ note().title }}: {{ note().content }}</div>
-  <div>
+<li
+  class="note-preview-card"
+  [class.selected]="note().id === selectedNote()?.id"
+  (click)="onClick()"
+>
+  <div class="title">{{ note().title ? note().title : "Untitled" }}</div>
+
+  <div class="content">{{ truncatedContent() }}</div>
+  <!-- <div>
     {{ note().updatedAt }}
-  </div>
+  </div> -->
 </li>
