@@ -66,11 +66,15 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseStaticFiles();
+
         app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
         app.MapHealthChecks("api/healthz");
+        
+        app.MapFallbackToFile("index.html");
 
         app.Run();
     }

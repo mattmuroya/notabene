@@ -185,6 +185,9 @@ DocProject/Help/html
 # Click-Once directory
 publish/
 
+# Client build
+wwwroot/
+
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
