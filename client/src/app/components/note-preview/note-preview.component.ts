@@ -19,8 +19,4 @@ export class NotePreviewComponent {
     const content = this.note().content;
     return content.length > 99 ? content.slice(0, 96) + '...' : content;
   });
-
-  onClick() {
-    this.noteService.selectNote(this.note());
-  }
 }

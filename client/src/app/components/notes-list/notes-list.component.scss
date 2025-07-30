@@ -1,4 +1,6 @@
-.notes-list {
-    margin: 0;
-    padding: 0;
+@use "../../styles/vars.scss" as *;
+
+li {
+  border-top: 1px solid $border-color;
+  padding: 20px;
 }

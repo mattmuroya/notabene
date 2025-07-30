@@ -1,5 +1,7 @@
-<ul class="notes-list">
+<ul>
   @for (note of notes(); track note.id) {
-  <app-note-preview [note]="note" />
+  <li (click)="onClickLi(note)">
+    <app-note-preview [note]="note"></app-note-preview>
+  </li>
   }
 </ul>

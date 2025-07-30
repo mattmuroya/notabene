@@ -5,25 +5,28 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: () => {
-      return import('./pages/home/home.component').then((m) => m.HomeComponent);
+    redirectTo: '/notes',
+  },
+  {
+    path: 'notes',
+    loadComponent: async () => {
+      const m = await import('./pages/notes/notes.component');
+      return m.NotesComponent;
     },
     canActivate: [authGuard],
   },
   {
     path: 'login',
-    loadComponent: () => {
-      return import('./pages/login/login.component').then(
-        (m) => m.LoginComponent
-      );
+    loadComponent: async () => {
+      const m = await import('./pages/login/login.component');
+      return m.LoginComponent;
     },
   },
   {
     path: 'register',
-    loadComponent: () => {
-      return import('./pages/register/register.component').then(
-        (m) => m.RegisterComponent
-      );
+    loadComponent: async () => {
+      const m = await import('./pages/register/register.component');
+      return m.RegisterComponent;
     },
   },
 ];

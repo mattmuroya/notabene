@@ -1,9 +1,2 @@
-html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-a {
-    color: #999
-}
+@use "./app/styles/reset.scss";
+@use "./app/styles/global.scss";
