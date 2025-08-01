@@ -1,38 +1,24 @@
-.login-form {
-    margin-top: -10px;
-    border: none;
+#form-title {
+  margin-top: 40px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
 
-    fieldset {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        border: none;
+form {
+  margin-top: 20px;
+}
 
-        width: 400px;
+fieldset {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
 
-        input,
-        button {
-            margin: 0;
-            box-sizing: border-box;
-            font-size: 1.2rem;
-            padding: 10px;
-            color: #999;
+  input,
+  button {
+    margin-top: 20px;
+  }
+}
 
-            border: 2px solid #444;
-
-            background-color: #1D2327;
-        }
-
-        button {
-            &:hover {
-                cursor: pointer;
-                background-color: #263B69;
-            }
-        }
-
-        input {
-            margin-bottom: 20px;
-        }
-    }
+#mode-switch {
+  margin-top: 20px;
 }

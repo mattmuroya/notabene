@@ -1,0 +1,9 @@
+<div id="tagline">
+  <p id="greeting">welcome back.</p>
+  <h1 id="title">NotaBene</h1>
+</div>
+@if (mode() == 'login') {
+<app-login-form />
+} @else {
+<app-register-form />
+}

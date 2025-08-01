@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { LoginRequest, RegisterRequest, User } from '../../types/types';
+import { LoginRequest, RegisterRequest, User } from '../../types/auth.types';
 
 @Injectable({
   providedIn: 'root',
