@@ -18,15 +18,17 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: async () => {
-      const m = await import('./pages/login/login.component');
-      return m.LoginComponent;
+      const m = await import('./pages/auth/auth.component');
+      return m.AuthComponent;
     },
+    data: { mode: 'login' },
   },
   {
     path: 'register',
     loadComponent: async () => {
-      const m = await import('./pages/register/register.component');
-      return m.RegisterComponent;
+      const m = await import('./pages/auth/auth.component');
+      return m.AuthComponent;
     },
+    data: { mode: 'register' },
   },
 ];

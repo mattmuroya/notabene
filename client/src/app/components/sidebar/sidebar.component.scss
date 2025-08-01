@@ -4,3 +4,13 @@
   width: 350px;
   border-right: 1px solid $border-color;
 }
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  button {
+    margin-bottom: 20px;
+  }
+}

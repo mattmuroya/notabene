@@ -1,0 +1,24 @@
+#form-title {
+  margin-top: 40px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+form {
+  margin-top: 20px;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+
+  input,
+  button {
+    margin-top: 20px;
+  }
+}
+
+#mode-switch {
+  margin-top: 20px;
+}
