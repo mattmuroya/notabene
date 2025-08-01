@@ -1,0 +1,52 @@
+<h2 id="form-title">Login</h2>
+
+<form
+  (ngSubmit)="mode() === 'login' ? submitLogin() : submitRegister()"
+  novalidate
+>
+  <fieldset [disabled]="successMessage()">
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      name="email"
+      required
+      email
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      name="password"
+      required
+    />
+    @if (mode() === 'register') {
+    <input
+      type="password"
+      placeholder="Confirm Password"
+      [(ngModel)]="confirmPassword"
+      name="confirmPassword"
+      required
+    />
+    }
+    <button type="submit">{{ this.capitalize(mode()) }}</button>
+  </fieldset>
+
+  @if (mode() === 'login') {
+  <p id="mode-switch">
+    Don't have an account?
+    <a routerLink="/register">Register</a>
+  </p>
+  } @else if (mode() === 'register') {
+  <p id="mode-switch">
+    Already have an account?
+    <a routerLink="/login">Login</a>
+  </p>
+  }
+</form>
+
+@if (successMessage()) {
+<p style="color: green">{{ successMessage() }}</p>
+} @if (errorMessage()) {
+<p style="color: red">{{ errorMessage() }}</p>
+}
